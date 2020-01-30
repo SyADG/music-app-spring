@@ -14,15 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mastercard.springtest.entity.Employee;
 import com.mastercard.springtest.service.EmployeeService;
 
-import lombok.extern.slf4j.Slf4j;
 @RestController
-@Slf4j
 public class EmployeeController {
 
 	@Autowired
 	private EmployeeService empService;
-
-	// Aggregate root
 
 	@GetMapping("/employees")
 	public List<Employee> findAll() {
@@ -33,8 +29,6 @@ public class EmployeeController {
 	public Employee addEmployee(@RequestBody Employee newEmployee) {
 		return empService.addEmployee(newEmployee);
 	}
-
-	// Single item
 
 	@GetMapping("/employees/{id}")
 	public Employee findEmployee(@PathVariable Long id) {
