@@ -1,21 +1,33 @@
 package com.mastercard.springtest.entity;
 
-import lombok.Data;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Data
 @Entity
+@Table(name = "employees")
+@EntityListeners(AuditingEntityListener.class)
 public class Employee {
 
-	private @Id @GeneratedValue Long id;
-	private String name;
-	private String role;
+	@Id
+	@GeneratedValue
+	private Long id;
 
-	Employee() {
-	}
+	@Column(nullable = false)
+	private String name;
+
+	@Column(nullable = false)
+	private String role;
 
 	public Employee(String name, String role) {
 		this.name = name;

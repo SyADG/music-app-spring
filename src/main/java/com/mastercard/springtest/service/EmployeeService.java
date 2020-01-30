@@ -16,19 +16,19 @@ public class EmployeeService {
 	@Autowired
 	private EmployeeRepository repository;
 
-	public List<Employee> all() {
+	public List<Employee> findAll() {
 		return repository.findAll();
 	}
 
-	public Employee newEmployee(@RequestBody Employee newEmployee) {
+	public Employee addEmployee(@RequestBody Employee newEmployee) {
 		return repository.save(newEmployee);
 	}
 
-	public Employee one(@PathVariable Long id) {
+	public Employee findEmployee(@PathVariable Long id) {
 		return repository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
 	}
 
-	public Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
+	public Employee updateEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
 		return repository.findById(id).map(employee -> {
 			employee.setName(newEmployee.getName());
 			employee.setRole(newEmployee.getRole());

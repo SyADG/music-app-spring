@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mastercard.springtest.entity.Employee;
 import com.mastercard.springtest.service.EmployeeService;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @RestController
 public class EmployeeController {
 
@@ -23,29 +25,31 @@ public class EmployeeController {
 	// Aggregate root
 
 	@GetMapping("/employees")
-	List<Employee> all() {
-		return empService.all();
+	public List<Employee> findAll() {
+		return empService.findAll();
 	}
 
 	@PostMapping("/employees")
-	Employee newEmployee(@RequestBody Employee newEmployee) {
-		return empService.newEmployee(newEmployee);
+	public Employee addEmployee(@RequestBody Employee newEmployee) {
+		log.info("Adding an employee: " + newEmployee.getName());
+		return empService.addEmployee(newEmployee);
 	}
 
 	// Single item
 
 	@GetMapping("/employees/{id}")
-	Employee one(@PathVariable Long id) {
-		return empService.one(id);
+	public Employee findEmployee(@PathVariable Long id) {
+		log.info("Returning the employee number: " + id);
+		return empService.findEmployee(id);
 	}
 
 	@PutMapping("/employees/{id}")
-	Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
-		return empService.replaceEmployee(newEmployee, id);
+	public Employee updateEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
+		return empService.updateEmployee(newEmployee, id);
 	}
 
 	@DeleteMapping("/employees/{id}")
-	void deleteEmployee(@PathVariable Long id) {
+	public void deleteEmployee(@PathVariable Long id) {
 		empService.deleteEmployee(id);
 	}
 }
