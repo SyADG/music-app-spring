@@ -15,8 +15,8 @@ import com.mastercard.springtest.entity.Employee;
 import com.mastercard.springtest.service.EmployeeService;
 
 import lombok.extern.slf4j.Slf4j;
-@Slf4j
 @RestController
+@Slf4j
 public class EmployeeController {
 
 	@Autowired
@@ -31,7 +31,6 @@ public class EmployeeController {
 
 	@PostMapping("/employees")
 	public Employee addEmployee(@RequestBody Employee newEmployee) {
-		log.info("Adding an employee: " + newEmployee.getName());
 		return empService.addEmployee(newEmployee);
 	}
 
@@ -39,7 +38,6 @@ public class EmployeeController {
 
 	@GetMapping("/employees/{id}")
 	public Employee findEmployee(@PathVariable Long id) {
-		log.info("Returning the employee number: " + id);
 		return empService.findEmployee(id);
 	}
 
