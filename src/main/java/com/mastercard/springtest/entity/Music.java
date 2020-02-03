@@ -1,9 +1,12 @@
 package com.mastercard.springtest.entity;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -15,22 +18,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "employees")
+@Table(name = "music")
 @EntityListeners(AuditingEntityListener.class)
-public class Employee {
-
+public class Music {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column
 	private String name;
 
-	@Column(nullable = false)
-	private String role;
-
-	public Employee(String name, String role) {
-		this.name = name;
-		this.role = role;
-	}
+	@Column
+	private Date date;
 }
