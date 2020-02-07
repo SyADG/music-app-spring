@@ -1,6 +1,4 @@
-package com.mastercard.springtest.entity;
-
-import java.sql.Date;
+package com.mastercard.musicapp.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -18,16 +17,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "music")
+@Table(name = "artist")
 @EntityListeners(AuditingEntityListener.class)
-public class Music {
+public class Artist {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column
+	@NotNull
+	@Column(nullable = false)
 	private String name;
 
-	@Column
-	private Date date;
+	@NotNull
+	@Column(nullable = false)
+	private String genre;
+
+	public Artist(Long id) {
+		this.id = id;
+	}
 }

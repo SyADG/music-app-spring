@@ -1,5 +1,6 @@
-package com.mastercard.springtest.entity;
+package com.mastercard.musicapp.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -7,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -16,16 +18,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "artist_music")
+@Table(name = "artist_song")
 @EntityListeners(AuditingEntityListener.class)
-public class ArtistMusic {
+public class ArtistSong {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotNull
 	@ManyToOne
 	private Artist artist;
 	
-	@ManyToOne
-	private Music music;
+	@NotNull
+	@ManyToOne(cascade = CascadeType.MERGE)
+	private Song song;
 }
