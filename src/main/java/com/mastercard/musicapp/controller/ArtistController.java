@@ -24,7 +24,7 @@ public class ArtistController {
 	@Autowired
 	private ArtistService artistService;
 
-	@GetMapping("/list")
+	@GetMapping
 	public ResponseEntity<List<Artist>> findAll() {
 		List<Artist> findAll = artistService.findAll();
 		return new ResponseEntity<List<Artist>>(findAll, HttpStatus.OK);
@@ -45,7 +45,7 @@ public class ArtistController {
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Artist> updateArtist(@RequestBody Artist newArtist, @PathVariable Long id) {
 		Artist updateArtist = artistService.updateArtist(newArtist, id);
-		return new ResponseEntity<Artist>(updateArtist,HttpStatus.CREATED);
+		return new ResponseEntity<Artist>(updateArtist, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/delete/{id}")

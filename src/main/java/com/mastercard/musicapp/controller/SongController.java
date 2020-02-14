@@ -25,7 +25,7 @@ public class SongController {
 	@Autowired
 	private SongService songService;
 
-	@GetMapping("/list")
+	@GetMapping
 	public ResponseEntity<Collection<Song>> findAll(@PathVariable(name = "id", required = true) Long artistId) {
 		Collection<Song> findAll = songService.findAll(artistId);
 		return new ResponseEntity<Collection<Song>>(findAll, HttpStatus.OK);

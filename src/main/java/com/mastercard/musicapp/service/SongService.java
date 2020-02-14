@@ -29,13 +29,16 @@ public class SongService {
 	private ArtistSongRepository artistSongRepository;
 
 	public Collection<Song> findAll(Long artistId) {
+		log.info("Listing all songs");
 		return songRepository.findAllArtistSongs(artistId);
 	}
 
 	public ArtistSong addSong(ArtistSong artistSong) {
 		try {
+			log.info("\n-------------------\nAdding song named: " + artistSong.getSong().getName() + "\nDate: "+ artistSong.getSong().getDate() +"\n-------------------");
 			return artistSongRepository.save(artistSong);
 		} catch (Exception e) {
+			log.error("Failed to add song");
 			throw new NullFieldsException();
 		}
 	}
@@ -48,7 +51,7 @@ public class SongService {
 	public Song updateSong(@RequestBody Song newSong, @PathVariable Long id) {
 		return songRepository.findById(id).map(song -> {
 
-			log.info("\n-------------------\nChanging the music: " + id + "\nNew music name: " + newSong.getName()
+			log.info("\n-------------------\nChanging the song: " + id + "\nNew song name: " + newSong.getName()
 					+ "\nNew date: " + newSong.getDate() + "\n-------------------");
 
 			song.setName(newSong.getName());
@@ -65,7 +68,6 @@ public class SongService {
 			List<ArtistSong> artistSongId = artistSongRepository.findArtistSongsIdBySongId(id);
 			songRepository.deleteById(id);
 			artistSongRepository.delete(artistSongId.get(0));
-//			artistSongRepository.deleteById(id);
 			
 			log.info("Song " + id + " successful deleted");
 		} catch (Exception e) {

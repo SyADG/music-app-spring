@@ -17,7 +17,7 @@ public class SwaggerConf {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors
-				.basePackage("com.mastercard.springtest.controller"))
+				.basePackage("com.mastercard.musicapp.controller"))
 				.paths(PathSelectors.any()).build().apiInfo(apiInfo());
 	}
 	
@@ -29,4 +29,5 @@ public class SwaggerConf {
 	            .build();
 	}
 
+	
 }
