@@ -38,6 +38,7 @@ public class ArtistService {
 					+ newArtist.getGenre() + "\n-------------------");
 			return artistRepository.save(newArtist);
 		} catch (Exception e) {
+			log.error("Required fields are null.");
 			throw new NullFieldsException();
 		}
 	}
@@ -57,7 +58,7 @@ public class ArtistService {
 			artist.setGenre(newArtist.getGenre());
 			return artistRepository.save(artist);
 		}).orElseThrow(() -> {
-			log.error("Could not found Artist " + id);
+			log.error("Could not find Artist " + id);
 			return new ArtistNotFoundException(id);
 		});
 	}
@@ -68,7 +69,7 @@ public class ArtistService {
 			artistRepository.deleteById(id);
 			log.info("Artist " + id + " successful deleted");
 		} catch (Exception e) {
-			log.error("Could not found Artist " + id);
+			log.error("Could not find Artist " + id);
 			throw new ArtistNotFoundException(id);
 		}
 	}

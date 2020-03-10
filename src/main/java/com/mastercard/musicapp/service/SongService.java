@@ -33,12 +33,13 @@ public class SongService {
 		return songRepository.findAllArtistSongs(artistId);
 	}
 
+	
 	public ArtistSong addSong(ArtistSong artistSong) {
 		try {
 			log.info("\n-------------------\nAdding song named: " + artistSong.getSong().getName() + "\nDate: "+ artistSong.getSong().getDate() +"\n-------------------");
 			return artistSongRepository.save(artistSong);
 		} catch (Exception e) {
-			log.error("Failed to add song");
+			log.error("Required fields are null.");
 			throw new NullFieldsException();
 		}
 	}
@@ -71,7 +72,7 @@ public class SongService {
 			
 			log.info("Song " + id + " successful deleted");
 		} catch (Exception e) {
-			log.error("Could not found Song " + id);
+			log.error("Could not find Song " + id);
 			throw new SongNotFoundException(id);
 		}
 	}

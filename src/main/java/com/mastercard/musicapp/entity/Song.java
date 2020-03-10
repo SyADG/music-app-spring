@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,11 +31,14 @@ public class Song {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
+	@NotBlank(message = "Song name must not be blank!")
+	@NotNull(message = "Song name must be informed!")
 	@Column
 	private String name;
-	
-	@NotNull
+
+	@Temporal(TemporalType.DATE)
+	@NotBlank(message = "Date must not be blank!")
+	@NotNull(message = "Date must be informed!")
 	@Column
 	private Date date;
 
@@ -41,6 +47,4 @@ public class Song {
 		this.name = name;
 		this.date = date;
 	}
-	
-	
 }

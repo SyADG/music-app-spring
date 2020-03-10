@@ -24,12 +24,12 @@ public class ArtistSong {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotNull
+
+	@NotNull(message = "Artist must be informed!")
 	@ManyToOne
 	private Artist artist;
-	
-	@NotNull
+
+	@NotNull(message = "Song must be informed!")
 	@ManyToOne(cascade = CascadeType.MERGE)
 	private Song song;
 }

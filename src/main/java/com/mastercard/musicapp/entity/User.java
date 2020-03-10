@@ -12,30 +12,33 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
-@Table(name = "artist")
+@Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
-public class Artist {
+public class User {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private long id;
 
-	@NotBlank(message = "Artist name must not be blank!")
-	@NotNull(message = "Artist name must be informed!")
+	@NotBlank(message = "Username must not be blank!")
+	@NotNull(message = "Username must be informed!")
 	@Column
-	private String name;
+	private String username;
 
-	@NotBlank(message = "Genre must not be blank!")
-	@NotNull(message = "Genre must be informed")
+	@NotBlank(message = "Password must not be blank!")
+	@NotNull(message = "Password must be informed!")
 	@Column
-	private String genre;
+	@JsonIgnore
+	private String password;
 
-	public Artist(Long id) {
-		this.id = id;
-	}
 }
