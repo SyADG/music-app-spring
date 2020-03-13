@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "user_login")
 @EntityListeners(AuditingEntityListener.class)
 public class User {
 
