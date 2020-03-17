@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @Entity
-@Table(name = "song")
+@Table(name = "songs")
 @EntityListeners(AuditingEntityListener.class)
 public class Song {
 	@Id
@@ -37,14 +37,7 @@ public class Song {
 	private String name;
 
 	@Temporal(TemporalType.DATE)
-	@NotBlank(message = "Date must not be blank!")
 	@NotNull(message = "Date must be informed!")
 	@Column
 	private Date date;
-
-	public Song(@NotNull String name, @NotNull Date date) {
-		super();
-		this.name = name;
-		this.date = date;
-	}
 }

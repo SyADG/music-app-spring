@@ -1,7 +1,6 @@
 package com.mastercard.musicapp.service;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -10,11 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.mastercard.musicapp.entity.ArtistSong;
+import com.mastercard.musicapp.entity.Artist;
 import com.mastercard.musicapp.entity.Song;
 import com.mastercard.musicapp.exceptions.NullFieldsException;
 import com.mastercard.musicapp.exceptions.SongNotFoundException;
-import com.mastercard.musicapp.repository.ArtistSongRepository;
+import com.mastercard.musicapp.repository.ArtistRepository;
 import com.mastercard.musicapp.repository.SongRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,22 +23,35 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SongService {
 	@Autowired
+	private ArtistRepository artistRepository;
+	@Autowired
 	private SongRepository songRepository;
 	@Autowired
-	private ArtistSongRepository artistSongRepository;
+	private ArtistService artistService;
 
 	public Collection<Song> findAll(Long artistId) {
 		log.info("Listing all songs");
-		return songRepository.findAllArtistSongs(artistId);
+		return artistRepository.findAllSongs(artistId);
 	}
 
-	
-	public ArtistSong addSong(ArtistSong artistSong) {
+	public Artist addSong(Artist newSong) {
 		try {
-			log.info("\n-------------------\nAdding song named: " + artistSong.getSong().getName() + "\nDate: "+ artistSong.getSong().getDate() +"\n-------------------");
-			return artistSongRepository.save(artistSong);
+			log.info("\n-------------------\nAdding: " + newSong.getSongs() + "\n-------------------");
+			Artist artist = new Artist();
+			songRepository.saveAll(newSong.getSongs());
+			artist = artistService.findArtist(newSong.getId());
+//			for (Song c : newSong.getSongs()) {
+//				if (c.getId() != null) {
+//					Long songId = c.getId(); 
+//					Song exSong = songRepository.findBySongId(songId);
+//					newSong.getSongs().add(exSong);
+//				}
+//			}
+			artist.getSongs().addAll(newSong.getSongs());
+			return artistRepository.save(artist);
+
 		} catch (Exception e) {
-			log.error("Required fields are null.");
+			log.error("Required fields are null. Error: " + e.getMessage());
 			throw new NullFieldsException();
 		}
 	}
@@ -66,11 +78,16 @@ public class SongService {
 
 	public void deleteSong(@PathVariable Long id) {
 		try {
-			List<ArtistSong> artistSongId = artistSongRepository.findArtistSongsIdBySongId(id);
+//			List<ArtistSong> artistSongId = artistSongRepository.findArtistSongsIdBySongId(id);
+//			songRepository.deleteAll();
+//			artistSongRepository.delete(artistSongId.get(0));
+//			
+//			log.info("Song " + id + " successful deleted");
+
+//			songRepository.deleteSongById(id);
 			songRepository.deleteById(id);
-			artistSongRepository.delete(artistSongId.get(0));
-			
 			log.info("Song " + id + " successful deleted");
+
 		} catch (Exception e) {
 			log.error("Could not find Song " + id);
 			throw new SongNotFoundException(id);

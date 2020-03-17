@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mastercard.musicapp.entity.ArtistSong;
+import com.mastercard.musicapp.entity.Artist;
 import com.mastercard.musicapp.entity.Song;
+import com.mastercard.musicapp.service.ArtistService;
 import com.mastercard.musicapp.service.SongService;
 
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +31,8 @@ public class SongController {
 
 	@Autowired
 	private SongService songService;
+	@Autowired
+	private ArtistService artistService;
 
 	@ApiOperation("List all songs of one artist.")
 	@ApiResponses({
@@ -48,9 +51,9 @@ public class SongController {
 		@ApiResponse(code = 400, message = "It will return a BAD_REQUEST if the required fields are missing.")
 	})
 	@PostMapping("/add")
-	public ResponseEntity<ArtistSong> addSong(@RequestBody ArtistSong artistSong) {
-		ArtistSong saveArtistSong = songService.addSong(artistSong);
-		return new ResponseEntity<ArtistSong>(saveArtistSong, HttpStatus.CREATED);
+	public ResponseEntity<Artist> addSong(@RequestBody Artist song) {	
+		Artist saveSong = songService.addSong(song);
+		return new ResponseEntity<Artist>(saveSong, HttpStatus.CREATED);
 	}
 
 	@ApiOperation("Get one song from the database via song and artist id")

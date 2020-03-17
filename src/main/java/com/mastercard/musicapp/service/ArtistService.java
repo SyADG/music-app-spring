@@ -13,7 +13,6 @@ import com.mastercard.musicapp.entity.Artist;
 import com.mastercard.musicapp.exceptions.ArtistNotFoundException;
 import com.mastercard.musicapp.exceptions.NullFieldsException;
 import com.mastercard.musicapp.repository.ArtistRepository;
-import com.mastercard.musicapp.repository.ArtistSongRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,9 +23,6 @@ public class ArtistService {
 	@Autowired
 	private ArtistRepository artistRepository;
 
-	@Autowired
-	private ArtistSongRepository artistSongRepository;
-
 	public List<Artist> findAll() {
 		log.info("Listing all artists");
 		return artistRepository.findAll();
@@ -36,6 +32,7 @@ public class ArtistService {
 		try {
 			log.info("\n-------------------\nAdding artist named: " + newArtist.getName() + " " + "\nGenre: "
 					+ newArtist.getGenre() + "\n-------------------");
+			newArtist.setSongs(null);
 			return artistRepository.save(newArtist);
 		} catch (Exception e) {
 			log.error("Required fields are null.");
@@ -61,12 +58,17 @@ public class ArtistService {
 			log.error("Could not find Artist " + id);
 			return new ArtistNotFoundException(id);
 		});
+		
 	}
 
 	public void deleteArtist(@PathVariable Long id) {
 		try {
-			artistSongRepository.deleteByArtistId(id);
+//			List<ArtistSong> artSong = artistSongRepository.findByArtistId(id);
+//			artistSongRepository.deleteAll(artSong);
+			
 			artistRepository.deleteById(id);
+//			artistSongRepository.deleteByArtistId(id);
+			
 			log.info("Artist " + id + " successful deleted");
 		} catch (Exception e) {
 			log.error("Could not find Artist " + id);

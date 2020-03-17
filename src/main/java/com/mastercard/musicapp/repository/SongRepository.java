@@ -10,9 +10,5 @@ import com.mastercard.musicapp.entity.Song;
 
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long>{
-	@Query("select new Song(song.id,song.name,song.date) from Song song " + 
-			"join ArtistSong artistSong on song.id = artistSong.song.id " + 
-			"join Artist artist on artist.id = artistSong.artist.id " +
-			"where artist.id = ?1")
-	public Collection<Song> findAllArtistSongs(Long id);
+	
 }
