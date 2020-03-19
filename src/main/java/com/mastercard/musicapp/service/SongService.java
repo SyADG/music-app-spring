@@ -6,8 +6,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mastercard.musicapp.entity.Artist;
 import com.mastercard.musicapp.entity.Song;
@@ -56,12 +54,12 @@ public class SongService {
 		}
 	}
 
-	public Song findSong(@PathVariable Long id) {
+	public Song findSong(Long id) {
 		log.info("Returning the song number: " + id);
 		return songRepository.findById(id).orElseThrow(() -> new SongNotFoundException(id));
 	}
 
-	public Song updateSong(@RequestBody Song newSong, @PathVariable Long id) {
+	public Song updateSong(Song newSong, Long id) {
 		return songRepository.findById(id).map(song -> {
 
 			log.info("\n-------------------\nChanging the song: " + id + "\nNew song name: " + newSong.getName()
@@ -76,21 +74,18 @@ public class SongService {
 		});
 	}
 
-	public void deleteSong(@PathVariable Long id) {
+	public void deleteSong(Long artistId, Long songId) {
 		try {
-//			List<ArtistSong> artistSongId = artistSongRepository.findArtistSongsIdBySongId(id);
-//			songRepository.deleteAll();
-//			artistSongRepository.delete(artistSongId.get(0));
-//			
-//			log.info("Song " + id + " successful deleted");
-
-//			songRepository.deleteSongById(id);
-			songRepository.deleteById(id);
-			log.info("Song " + id + " successful deleted");
+			Song song = findSong(songId);
+			Artist artistSong = artistService.findArtist(artistId);
+			artistSong.getSongs().remove(song);
+			songRepository.delete(song);
+			artistRepository.save(artistSong);
+			log.info("Song " + songId + " successful deleted");
 
 		} catch (Exception e) {
-			log.error("Could not find Song " + id);
-			throw new SongNotFoundException(id);
+			log.error("Could not find Song " + artistId);
+			throw new SongNotFoundException(artistId);
 		}
 	}
 }

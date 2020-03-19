@@ -10,7 +10,6 @@ import com.mastercard.musicapp.entity.Artist;
 import com.mastercard.musicapp.entity.Song;
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Long>{
-	public Collection<Song> findSongsById(Long id);
 	@Query("SELECT songs FROM Artist a where a.id = ?1")
 	public Collection<Song> findAllSongs(Long id);
 }

@@ -13,6 +13,7 @@ import com.mastercard.musicapp.entity.Artist;
 import com.mastercard.musicapp.exceptions.ArtistNotFoundException;
 import com.mastercard.musicapp.exceptions.NullFieldsException;
 import com.mastercard.musicapp.repository.ArtistRepository;
+import com.mastercard.musicapp.repository.SongRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,17 +59,12 @@ public class ArtistService {
 			log.error("Could not find Artist " + id);
 			return new ArtistNotFoundException(id);
 		});
-		
+
 	}
 
 	public void deleteArtist(@PathVariable Long id) {
 		try {
-//			List<ArtistSong> artSong = artistSongRepository.findByArtistId(id);
-//			artistSongRepository.deleteAll(artSong);
-			
 			artistRepository.deleteById(id);
-//			artistSongRepository.deleteByArtistId(id);
-			
 			log.info("Artist " + id + " successful deleted");
 		} catch (Exception e) {
 			log.error("Could not find Artist " + id);

@@ -41,7 +41,7 @@ public class Artist {
 	private String genre;
 
 	@ManyToMany
-	@JoinTable(name = "artist_song", joinColumns = { @JoinColumn(name = "artists_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "songs_id") })
+	@JoinTable( name = "artist_song", joinColumns = { @JoinColumn(name = "artists_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "songs_id")})
 	private Collection<Song> songs;
 }

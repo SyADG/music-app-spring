@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mastercard.musicapp.entity.Artist;
 import com.mastercard.musicapp.entity.Song;
-import com.mastercard.musicapp.service.ArtistService;
 import com.mastercard.musicapp.service.SongService;
 
 import io.swagger.annotations.ApiOperation;
@@ -31,8 +30,6 @@ public class SongController {
 
 	@Autowired
 	private SongService songService;
-	@Autowired
-	private ArtistService artistService;
 
 	@ApiOperation("List all songs of one artist.")
 	@ApiResponses({
@@ -87,9 +84,9 @@ public class SongController {
 		@ApiResponse(code = 403, message = "It will return a FORBIDDEN if user is not logged in."),
 		@ApiResponse(code = 404, message = "It will return a NOT_FOUND if the id is not found on the database.")
 	})
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-		songService.deleteSong(id);
+	@DeleteMapping("/delete/{id1}")
+	public ResponseEntity<Void> deleteById(@RequestBody Artist artist, @PathVariable Long id, @PathVariable Long id1) {
+		songService.deleteSong(id, id1);
 		return ResponseEntity.noContent().build();
 	}
 }
