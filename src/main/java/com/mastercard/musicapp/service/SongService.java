@@ -32,12 +32,12 @@ public class SongService {
 		return artistRepository.findAllSongs(artistId);
 	}
 
-	public Artist addSong(Artist newSong) {
+	public Song addSong(Long artistId,Song newSong) {
 		try {
-			log.info("\n-------------------\nAdding: " + newSong.getSongs() + "\n-------------------");
+			log.info("\n-------------------\nAdding: " + newSong.getName() + "\n-------------------");
 			Artist artist = new Artist();
-			songRepository.saveAll(newSong.getSongs());
-			artist = artistService.findArtist(newSong.getId());
+			songRepository.save(newSong);
+			artist = artistService.findArtist(artistId);
 //			for (Song c : newSong.getSongs()) {
 //				if (c.getId() != null) {
 //					Long songId = c.getId(); 
@@ -45,8 +45,9 @@ public class SongService {
 //					newSong.getSongs().add(exSong);
 //				}
 //			}
-			artist.getSongs().addAll(newSong.getSongs());
-			return artistRepository.save(artist);
+			artist.getSongs().add(newSong);
+			artistRepository.save(artist);
+			return newSong;
 
 		} catch (Exception e) {
 			log.error("Required fields are null. Error: " + e.getMessage());
@@ -76,6 +77,7 @@ public class SongService {
 
 	public void deleteSong(Long artistId, Long songId) {
 		try {
+			log.info("Trying to delete...");
 			Song song = findSong(songId);
 			Artist artistSong = artistService.findArtist(artistId);
 			artistSong.getSongs().remove(song);

@@ -13,7 +13,6 @@ import com.mastercard.musicapp.entity.Artist;
 import com.mastercard.musicapp.exceptions.ArtistNotFoundException;
 import com.mastercard.musicapp.exceptions.NullFieldsException;
 import com.mastercard.musicapp.repository.ArtistRepository;
-import com.mastercard.musicapp.repository.SongRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
