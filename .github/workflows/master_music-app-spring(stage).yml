@@ -28,5 +28,5 @@ jobs:
       with:
         app-name: 'music-app-spring(stage)'
         slot-name: 'stage'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_86b046c8a5ac43d3aca4933c7e2a932a }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_36f91bdce61f48cd99c992abc38d7d64 }}
         package: '${{ github.workspace }}/target/*.jar'
