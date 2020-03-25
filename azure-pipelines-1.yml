@@ -10,13 +10,20 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m -Dspring.profiles.active=prod'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+- uses: actions/checkout@master
+
+- name: Set up Java version
+  uses: actions/setup-java@v1
+  with:
+    java-version: '11'
+
+- name: Build with Maven
+  run: mvn clean install
+
+- name: Deploy to Azure Web App
+  uses: azure/webapps-deploy@v1
+  with:
+    app-name: 'music-app-back'
+    slot-name: 'production'
+    publish-profile: ${{ secrets.AzureAppService_PublishProfile_9234062b45be46b9b063c180a1aa0764 }}
+    package: '${{ github.workspace }}/target/*.jar'
