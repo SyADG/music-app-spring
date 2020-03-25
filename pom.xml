@@ -145,6 +145,7 @@
 		</dependency>
 	</dependencies>
 	<build>
+	<finalName>app.jar</finalName>
 		<plugins>
 			<plugin>
 				<groupId>com.microsoft.azure</groupId>
