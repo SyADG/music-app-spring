@@ -28,5 +28,5 @@ jobs:
       with:
         app-name: 'music-app-back'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_3649253b55f24d8aa70321e30f5cf266 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_9234062b45be46b9b063c180a1aa0764 }}
         package: '${{ github.workspace }}/target/*.jar'
