@@ -3,27 +3,26 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-trigger:
-- master
+trigger: none
+
+pr: none
+
+variables: 
+- group: nexus-snapshot-repository
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- uses: actions/checkout@master
-
-- name: Set up Java version
-  uses: actions/setup-java@v1
-  with:
-    java-version: '11'
-
-- name: Build with Maven
-  run: mvn clean install
-
-- name: Deploy to Azure Web App
-  uses: azure/webapps-deploy@v1
-  with:
-    app-name: 'music-app-back'
-    slot-name: 'production'
-    publish-profile: ${{ secrets.AzureAppService_PublishProfile_9234062b45be46b9b063c180a1aa0764 }}
-    package: '${{ github.workspace }}/target/*.jar'
+- task: Maven@3
+  displayName: Daily Snapshot Publish
+  inputs:
+    mavenPomFile: 'pom.xml'
+    options: '-DskipITs -s .maven/settings.xml -DaltDeploymentRepository=nexus-snapshots::default::https://oss.sonatype.org/content/repositories/snapshots/ -pl !azure-spring-boot-samples,!azure-spring-boot-tests'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'clean deploy'
