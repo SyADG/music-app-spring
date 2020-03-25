@@ -28,5 +28,5 @@ jobs:
       with:
         app-name: 'music-app-back(stage)'
         slot-name: 'stage'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_1107483aa077466e83cc072d60e577aa }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_97acd2ed07364f90a3cc3eab218dd2f1 }}
         package: '${{ github.workspace }}/target/*.jar'
