@@ -3,31 +3,22 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-trigger:
-- master
+trigger: none
+
+pr: none
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
 - task: Maven@3
+  displayName: Daily Snapshot Publish
   inputs:
     mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m -Dspring.profiles.active=prod'
+    mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'clean install'
-- script: ./mvnw package -Pprod -DskipTests
-  displayName: 'BUILD: creating production build'
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'target'
-    Contents: '*.jar'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: bugtracker
+    goals: 'clean deploy'
