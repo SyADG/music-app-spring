@@ -34,7 +34,7 @@ stages:
       displayName: 'Maven Package'
       inputs:
         mavenPomFile: 'pom.xml'
-        options: '-Dspring.profiles.active=dev'
+        options: '-Dspring.profiles.active=prod'
 
     - task: CopyFiles@2
       displayName: 'Copy Files to artifact staging directory'
