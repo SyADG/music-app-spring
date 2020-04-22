@@ -2,9 +2,11 @@ package com.musicapp.entity;
 
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +18,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,8 +44,10 @@ public class Artist {
 	@Column(name = "genre")
 	private String genre;
 
-	@ManyToMany
-	@JoinTable( name = "artist_song", joinColumns = { @JoinColumn(name = "artists_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "songs_id")})
+	@JsonBackReference
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
+			CascadeType.PERSIST }, targetEntity = Song.class)
+	@JoinTable(name = "artist_song", joinColumns = { @JoinColumn(name = "artists_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "songs_id") })
 	private Collection<Song> songs;
 }

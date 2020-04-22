@@ -37,10 +37,14 @@ public class JwtUserDetailsService implements UserDetailsService {
 	}
 
 	public User save(UserDTO user) {
-		User newUser = new User();
-		newUser.setUsername(user.getUsername());
-		newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
-		log.info("Registering new user: " + user.getUsername());
-		return userRep.save(newUser);
+		try {
+			User newUser = new User();
+			newUser.setUsername(user.getUsername());
+			newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
+			log.info("Registering new user: " + user.getUsername());
+			return userRep.save(newUser);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 }

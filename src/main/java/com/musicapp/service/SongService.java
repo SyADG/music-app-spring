@@ -1,5 +1,6 @@
 package com.musicapp.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -24,34 +25,28 @@ public class SongService {
 	private ArtistRepository artistRepository;
 	@Autowired
 	private SongRepository songRepository;
-	@Autowired
-	private ArtistService artistService;
 
 	public Collection<Song> findAll(Long artistId) {
 		log.info("Listing all songs");
 		return artistRepository.findAllSongs(artistId);
 	}
 
-	public Song addSong(Long artistId,Song newSong) {
+	public Song addSong(Long artistId, Song newSong) throws NullFieldsException {
 		try {
-			log.info("\n-------------------\nAdding: " + newSong.getName() + "\n-------------------");
-			Artist artist = new Artist();
-			songRepository.save(newSong);
-			artist = artistService.findArtist(artistId);
-//			for (Song c : newSong.getSongs()) {
-//				if (c.getId() != null) {
-//					Long songId = c.getId(); 
-//					Song exSong = songRepository.findBySongId(songId);
-//					newSong.getSongs().add(exSong);
-//				}
-//			}
-			artist.getSongs().add(newSong);
-			artistRepository.save(artist);
-			return newSong;
-
+			if (newSong.getName() == null || newSong.getDate() == null) {
+				throw new NullFieldsException("Name or date must not be empty");
+			} else {
+				log.info("\n-------------------\nAdding: " + newSong.getName() + "\n-------------------");
+				Artist artist = artistRepository.findArtistById(artistId);
+				newSong.setArtists(new ArrayList<Artist>());
+				newSong.getArtists().add(artist);
+				return songRepository.save(newSong);
+			}
+		} catch (NullFieldsException nfe) {
+			throw nfe;
 		} catch (Exception e) {
-			log.error("Required fields are null. Error: " + e.getMessage());
-			throw new NullFieldsException();
+			log.error("Unknown error: Message: " + e.getMessage());
+			throw new RuntimeException("RuntimeException: " + e.getMessage());
 		}
 	}
 
@@ -61,33 +56,31 @@ public class SongService {
 	}
 
 	public Song updateSong(Song newSong, Long id) {
-		return songRepository.findById(id).map(song -> {
-
-			log.info("\n-------------------\nChanging the song: " + id + "\nNew song name: " + newSong.getName()
-					+ "\nNew date: " + newSong.getDate() + "\n-------------------");
-
+		try {
+			Song song = new Song();
+			song.setId(id);
 			song.setName(newSong.getName());
 			song.setDate(newSong.getDate());
-			return songRepository.save(song);
-		}).orElseThrow(() -> {
-			log.error("Could not find Song " + id);
-			return new SongNotFoundException(id);
-		});
-	}
 
-	public void deleteSong(Long artistId, Long songId) {
-		try {
-			log.info("Trying to delete...");
-			Song song = findSong(songId);
-			Artist artistSong = artistService.findArtist(artistId);
-			artistSong.getSongs().remove(song);
-			songRepository.delete(song);
-			artistRepository.save(artistSong);
-			log.info("Song " + songId + " successful deleted");
+			log.info("\n-------------------\nChanging the artist: " + id + "\nNew artist name: " + newSong.getName()
+					+ "\nNew Genre: " + newSong.getDate() + "\n-------------------");
+			return songRepository.save(song);
 
 		} catch (Exception e) {
-			log.error("Could not find Song " + artistId);
-			throw new SongNotFoundException(artistId);
+			log.error("Could not find Artist " + id);
+			System.out.println("Mesage" + e.getMessage());
+			throw new RuntimeException("RuntimeException: " + e.getMessage());
+		}
+	}
+
+	public void deleteSong(Long songId) {
+		log.info("Trying to delete...");
+		try {
+			songRepository.deleteById(songId);
+			log.info("Song " + songId + " successful deleted");
+		} catch (Exception e) {
+			log.error("Unknown error: " + e.getMessage());
+			throw new RuntimeException("RuntimeException: " + e.getMessage());
 		}
 	}
 }

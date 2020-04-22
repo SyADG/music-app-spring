@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.musicapp.entity.Artist;
+import com.musicapp.exceptions.NullFieldsException;
 import com.musicapp.service.ArtistService;
 
 import io.swagger.annotations.ApiOperation;
@@ -47,7 +48,7 @@ public class ArtistController {
 		@ApiResponse(code = 400, message = "It will return a BAD_REQUEST if the required fields are missing.")
 	})
 	@PostMapping("/add")
-	public ResponseEntity<Artist> addArtist(@RequestBody Artist newArtist) {
+	public ResponseEntity<Artist> addArtist(@RequestBody Artist newArtist) throws NullFieldsException {
 		Artist addArtist = artistService.addArtist(newArtist);
 		return new ResponseEntity<Artist>(addArtist, HttpStatus.CREATED);
 	}

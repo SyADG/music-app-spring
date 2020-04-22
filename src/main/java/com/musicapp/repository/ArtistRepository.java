@@ -12,4 +12,6 @@ import com.musicapp.entity.Song;
 public interface ArtistRepository extends JpaRepository<Artist, Long>{
 	@Query("SELECT songs FROM Artist a where a.id = ?1")
 	public Collection<Song> findAllSongs(Long id);
+	
+	public Artist findArtistById(Long id);
 }

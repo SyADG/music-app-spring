@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.musicapp.entity.Song;
+import com.musicapp.exceptions.NullFieldsException;
 import com.musicapp.service.SongService;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,7 +44,7 @@ public class SongController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "It will return a new song and artist."),
 			@ApiResponse(code = 400, message = "It will return a BAD_REQUEST if the required fields are missing.") })
 	@PostMapping("/add")
-	public ResponseEntity<Song> addSong(@PathVariable Long id, @RequestBody Song song) {
+	public ResponseEntity<Song> addSong(@PathVariable Long id, @RequestBody Song song) throws NullFieldsException {
 		Song saveSong = songService.addSong(id, song);
 		return new ResponseEntity<Song>(saveSong, HttpStatus.CREATED);
 	}
@@ -74,9 +75,9 @@ public class SongController {
 			@ApiResponse(code = 204, message = "It will return a NO_CONTENT if the song is removed from database"),
 			@ApiResponse(code = 403, message = "It will return a FORBIDDEN if user is not logged in."),
 			@ApiResponse(code = 404, message = "It will return a NOT_FOUND if the id is not found on the database.") })
-	@DeleteMapping("/delete/{id1}")
-	public ResponseEntity<Void> deleteById(@PathVariable Long id, @PathVariable Long id1) {
-		songService.deleteSong(id, id1);
+	@DeleteMapping("/delete/{songId}")
+	public ResponseEntity<Void> deleteById(@PathVariable Long songId) {
+		songService.deleteSong(songId);
 		return ResponseEntity.noContent().build();
 	}
 }
