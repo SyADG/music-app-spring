@@ -20,13 +20,12 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.common.collect.Iterables;
-import com.musicapp.controller.ArtistController;
 import com.musicapp.controller.SongController;
 import com.musicapp.entity.Song;
 import com.musicapp.exceptions.NullFieldsException;
 import com.musicapp.service.SongService;
 
-@WebMvcTest(controllers = ArtistController.class)
+@WebMvcTest(controllers = SongController.class)
 @RunWith(MockitoJUnitRunner.class)
 public class SongControllerTest {
 	@InjectMocks

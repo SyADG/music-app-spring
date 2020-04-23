@@ -14,14 +14,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 
-import com.musicapp.controller.ArtistController;
 import com.musicapp.controller.JwtAuthenticationController;
 import com.musicapp.model.JwtRequest;
 import com.musicapp.model.UserDTO;
 import com.musicapp.security.JwtTokenUtil;
 import com.musicapp.service.JwtUserDetailsService;
 
-@WebMvcTest(controllers = ArtistController.class)
+@WebMvcTest(controllers = JwtAuthenticationController.class)
 @RunWith(MockitoJUnitRunner.class)
 public class JwtAuthenticationControllerTest {
 	@InjectMocks
