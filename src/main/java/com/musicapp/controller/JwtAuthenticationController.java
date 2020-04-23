@@ -39,7 +39,7 @@ public class JwtAuthenticationController {
 	@ApiOperation("Authenticate an user")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "It will login in the application."),
-		@ApiResponse(code = 401, message = "It will return a UNAUTHORIZED if the authentication fail."),
+		@ApiResponse(code = 401, message = "It will return an UNAUTHORIZED if the authentication fail."),
 	})
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {

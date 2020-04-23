@@ -51,7 +51,6 @@
 			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
-				<version>1.16.16</version>
 				<scope>provided</scope>
 			</dependency>
 		<!-- devtools -->
@@ -70,14 +69,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>2.2.6.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.13</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- Mockito extention -->

@@ -76,7 +76,7 @@ public class SongController {
 			@ApiResponse(code = 403, message = "It will return a FORBIDDEN if user is not logged in."),
 			@ApiResponse(code = 404, message = "It will return a NOT_FOUND if the id is not found on the database.") })
 	@DeleteMapping("/delete/{songId}")
-	public ResponseEntity<Void> deleteById(@PathVariable Long songId) {
+	public ResponseEntity<Void> deleteSong(@PathVariable Long songId) {
 		songService.deleteSong(songId);
 		return ResponseEntity.noContent().build();
 	}

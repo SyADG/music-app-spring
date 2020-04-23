@@ -1,12 +1,13 @@
 package com.test.musicapp.service;
 
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,6 +16,7 @@ import com.musicapp.model.UserDTO;
 import com.musicapp.repository.UserRepository;
 import com.musicapp.service.JwtUserDetailsService;
 
+@ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.class)
 public class JwtUserDetailsServiceTest {
 	@InjectMocks
@@ -24,22 +26,13 @@ public class JwtUserDetailsServiceTest {
 	@Mock
 	private PasswordEncoder bcryptEncoder;
 
-	public JwtUserDetailsServiceTest() {
-		MockitoAnnotations.initMocks(this);
-	}
-
 	private User createDefaultUser() {
-		User user = new User();
-		user.setId(1L);
-		user.setUsername("user");
-		user.setPassword("password");
+		User user = new User(1L,"user","password");
 		return user;
 	}
 
 	private UserDTO createDefaultUserDTO() {
-		UserDTO user = new UserDTO();
-		user.setUsername("user");
-		user.setPassword(bcryptEncoder.encode("password"));
+		UserDTO user = new UserDTO("user", bcryptEncoder.encode("password"));
 		return user;
 	}
 
@@ -63,8 +56,9 @@ public class JwtUserDetailsServiceTest {
 
 	@Test(expected = UsernameNotFoundException.class)
 	public void testWhenLoadUserNameShouldThowUsernameNotFoundException() {
-		Mockito.when(userRepository.findByUsername(Mockito.anyString()))
-				.thenThrow(Mockito.mock(UsernameNotFoundException.class));
-		jwtService.loadUserByUsername("");
+		Mockito.when(userRepository.findByUsername(Mockito.anyString())).thenReturn(null)
+				.thenThrow(UsernameNotFoundException.class);
+		jwtService.loadUserByUsername(Mockito.anyString());
 	}
+
 }

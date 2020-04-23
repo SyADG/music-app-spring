@@ -5,12 +5,13 @@ import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.musicapp.entity.Artist;
 import com.musicapp.exceptions.ArtistNotFoundException;
@@ -18,6 +19,7 @@ import com.musicapp.exceptions.NullFieldsException;
 import com.musicapp.repository.ArtistRepository;
 import com.musicapp.service.ArtistService;
 
+@ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.class)
 public class ArtistServiceTest {
 
@@ -26,16 +28,8 @@ public class ArtistServiceTest {
 	@Mock
 	private ArtistRepository artistRepository;
 
-	public ArtistServiceTest() {
-		MockitoAnnotations.initMocks(this);
-	}
-
 	private Artist createDefaultArtist() {
-		Artist artist = new Artist();
-		artist.setId(1L);
-		artist.setGenre("Genre");
-		artist.setName("Name");
-		artist.setSongs(null);
+		Artist artist = new Artist(1L, "Name", "Genre", null);
 		return artist;
 	}
 
@@ -60,13 +54,13 @@ public class ArtistServiceTest {
 	@Test(expected = ArtistNotFoundException.class)
 	public void testFindByIdShouldThrowException() {
 		Mockito.when(artistRepository.findById(Mockito.anyLong())).thenThrow(ArtistNotFoundException.class);
-		artistService.findArtist(Mockito.anyLong());
+		artistService.findArtist(0L);
 	}
 
 	@Test
 	public void testFindByIdShouldReturnArtist() {
 		Mockito.when(artistRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(createDefaultArtist()));
-		artistService.findArtist(Mockito.anyLong());
+		artistService.findArtist(createDefaultArtist().getId());
 	}
 
 	@Test
@@ -78,7 +72,7 @@ public class ArtistServiceTest {
 	@Test(expected = RuntimeException.class)
 	public void testUpdateArtistShouldThrowException() {
 		Mockito.when(artistRepository.save(Mockito.any())).thenReturn(Mockito.mock(Exception.class));
-		artistService.updateArtist(createDefaultArtist(),createDefaultArtist().getId());
+		artistService.updateArtist(createDefaultArtist(), createDefaultArtist().getId());
 	}
 
 	@Test
@@ -86,11 +80,33 @@ public class ArtistServiceTest {
 		artistService.deleteArtist(Mockito.anyLong());
 		Mockito.verify(artistRepository, Mockito.times(1)).deleteById(Mockito.anyLong());
 	}
-	
+
 	@Test(expected = RuntimeException.class)
 	public void testWhenDeleteArtistShouldThrowException() {
 		Mockito.doThrow(Mockito.mock(RuntimeException.class)).when(artistRepository).deleteById(Mockito.anyLong());
 		artistService.deleteArtist(Mockito.anyLong());
 	}
 
+	@Test(expected = NullFieldsException.class)
+	public void testWhenAddArtistWithoutNameShouldThrowNullFieldsException() throws NullFieldsException {
+		Artist artist = new Artist();
+		artist.setGenre("Genre");
+		Mockito.when(artistService.addArtist(artist)).thenThrow(Mockito.mock(NullFieldsException.class));
+		artistService.addArtist(artist);
+	}
+
+	@Test(expected = NullFieldsException.class)
+	public void testWhenAddArtistWithoutGenreShouldThrowNullFieldsException() throws NullFieldsException {
+		Artist artist = new Artist();
+		artist.setName("Name");
+		Mockito.when(artistService.addArtist(artist)).thenThrow(Mockito.mock(NullFieldsException.class));
+		artistService.addArtist(artist);
+	}
+
+	@Test(expected = NullFieldsException.class)
+	public void testWhenAddEmptyArtistShouldThrowNullFieldsException() throws NullFieldsException {
+		Artist artist = new Artist();
+		Mockito.when(artistService.addArtist(artist)).thenThrow(Mockito.mock(NullFieldsException.class));
+		artistService.addArtist(artist);
+	}
 }
